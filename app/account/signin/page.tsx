@@ -1,18 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/utils/useAuth";
 import { ArrowLeft } from "lucide-react";
 
-function MainComponent() {
-  const [error, setError] = useState(null);
+export default function SignInPage() {
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signInWithCredentials } = useAuth();
+  const router = useRouter();
+  // ★ FIX: ใช้ `login` ซึ่งเป็น function จริงที่ export ออกมา
+  const { login } = useAuth();
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -24,20 +27,19 @@ function MainComponent() {
     }
 
     try {
-      await signInWithCredentials({
-        email,
-        password,
-        callbackUrl: "/dashboard",
-        redirect: true,
-      });
-    } catch (err) {
-      const errorMessages = {
-        CredentialsSignin: "Incorrect email or password.",
-      };
+      const result = await login(email, password);
 
-      setError(
-        errorMessages[err.message] || "Something went wrong. Please try again.",
-      );
+      if (result?.error) {
+        setError("Incorrect email or password.");
+        setLoading(false);
+        return;
+      }
+
+      // สำเร็จ → ไป dashboard
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Something went wrong. Please try again.");
       setLoading(false);
     }
   };
@@ -80,7 +82,9 @@ function MainComponent() {
             </div>
           </div>
 
-          {error && <p className="text-center text-sm text-red-500">{error}</p>}
+          {error && (
+            <p className="text-center text-sm text-red-500">{error}</p>
+          )}
 
           <button
             type="submit"
@@ -92,7 +96,7 @@ function MainComponent() {
         </form>
 
         <div className="text-center text-sm">
-          <span className="text-gray-500">Don't have an account? </span>
+          <span className="text-gray-500">Don&apos;t have an account? </span>
           <a href="/account/signup" className="font-medium hover:underline">
             Sign up
           </a>
@@ -111,8 +115,6 @@ function MainComponent() {
     </div>
   );
 }
-
-export default MainComponent;
 
 
 

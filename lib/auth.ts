@@ -46,18 +46,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Invalid password");
         }
 
+        // ★ FIX: schema มี `username` ไม่มี `name`
+        //         ส่ง username ไปเก็บใน token.name เพื่อให้ session.user.name ใช้งานได้
         return {
           id: user.id,
           email: user.email,
-          name: user.name,
-          image: user.image,
+          name: user.username, // username → แสดงผลเป็น display name
         };
       },
     }),
   ],
 
   pages: {
-    signIn: "/login",
+    signIn: "/account/signin",
   },
 
   callbacks: {
@@ -65,7 +66,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
       }
-
       return token;
     },
 
@@ -73,7 +73,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
       }
-
       return session;
     },
   },

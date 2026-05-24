@@ -7,7 +7,12 @@ export default async function HomePage() {
       published: true,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+        }
+      }
     },
     orderBy: {
       createdAt: "desc",

@@ -1,45 +1,58 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/utils/useAuth";
 import { ArrowLeft } from "lucide-react";
 
-function MainComponent() {
-  const [error, setError] = useState(null);
+export default function SignUpPage() {
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signUpWithCredentials } = useAuth();
+  const router = useRouter();
+  // ★ FIX: ใช้ `register` ซึ่งเป็น function จริงที่ export ออกมา
+  const { register } = useAuth();
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (!email || !password) {
+    if (!email || !password || !username) {
       setError("Please fill in all fields");
       setLoading(false);
       return;
     }
 
-    try {
-      await signUpWithCredentials({
-        email,
-        password,
-        callbackUrl: "/dashboard",
-        redirect: true,
-      });
-    } catch (err) {
-      const errorMessages = {
-        OAuthSignin: "Couldn’t start sign-up. Please try again.",
-        EmailCreateAccount: "This email may already be registered.",
-        CredentialsSignin: "Invalid email or password.",
-      };
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setLoading(false);
+      return;
+    }
 
-      setError(
-        errorMessages[err.message] || "Something went wrong. Please try again.",
-      );
+    try {
+      const result = await register({ email, password, username });
+
+      if (result?.error) {
+        setError("Could not complete sign-up. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // สมัครและ login สำเร็จ → ไป dashboard
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      // แปลง error message จาก API ให้อ่านง่าย
+      const errorMessages: Record<string, string> = {
+        "This email is already registered": "This email is already in use.",
+        "This username is already registered": "This username is taken.",
+      };
+      setError(errorMessages[msg] ?? msg);
       setLoading(false);
     }
   };
@@ -58,6 +71,19 @@ function MainComponent() {
 
         <form onSubmit={onSubmit} className="space-y-6">
           <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium uppercase tracking-wider text-gray-500">
+                Username
+              </label>
+              <input
+                required
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="your_username"
+                className="w-full border-b border-gray-200 py-2 outline-none transition-colors focus:border-black"
+              />
+            </div>
             <div className="space-y-2">
               <label className="text-sm font-medium uppercase tracking-wider text-gray-500">
                 Email
@@ -86,7 +112,9 @@ function MainComponent() {
             </div>
           </div>
 
-          {error && <p className="text-center text-sm text-red-500">{error}</p>}
+          {error && (
+            <p className="text-center text-sm text-red-500">{error}</p>
+          )}
 
           <button
             type="submit"
@@ -117,8 +145,3 @@ function MainComponent() {
     </div>
   );
 }
-
-export default MainComponent;
-
-
-

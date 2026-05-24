@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, User, Menu, X, Feather } from "lucide-react";
 import useUser from "@/utils/useUser";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
   const { data: user } = useUser();
@@ -54,12 +55,12 @@ export default function Header() {
                 >
                   Dashboard
                 </a>
-                <a
-                  href="/account/logout"
-                  className="text-sm font-medium uppercase tracking-widest text-gray-400 hover:text-black"
+                <button 
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="text-sm font-medium uppercase tracking-widest text-gray-400 hover:text-black"
                 >
-                  Logout
-                </a>
+                    Logout
+                </button>
                 <a
                   href={`/profile/${user.id}`}
                   className="h-8 w-8 rounded-full border border-gray-100 bg-gray-50 p-1"

@@ -3,7 +3,20 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-export default function PostCard({ post }) {
+interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  coverImage?: string | null;
+  createdAt: string | Date;
+  authorId: string;
+  author?: {
+    username: string;
+  } | null;
+}
+
+export default function PostCard({ post }: { post: Post }) {
   return (
     <article className="group border-b border-gray-100 py-12">
       <div className="flex flex-col md:flex-row md:space-x-8">
@@ -27,7 +40,8 @@ export default function PostCard({ post }) {
               href={`/profile/${post.authorId}`}
               className="hover:text-black transition-colors"
             >
-              {post.author?.name || "Anonymous"}
+              {/* ★ FIX: schema ใช้ `username` ไม่มี field `name` */}
+              {post.author?.username ?? "Anonymous"}
             </Link>
           </div>
 
