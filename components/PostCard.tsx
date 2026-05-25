@@ -18,7 +18,7 @@ interface Post {
 
 export default function PostCard({ post }: { post: Post }) {
   return (
-    <article className="group border-b border-gray-100 py-12">
+    <article className="group border-b border-gray-400 py-12">
       <div className="flex flex-col md:flex-row md:space-x-8">
 
         {/* LEFT */}

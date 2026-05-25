@@ -100,7 +100,7 @@ export default function DashboardPage() {
                     </h3>
                   </div>
 
-                  <div className="flex items-center space-x-2 opacity-0 transition-opacity group-hover:opacity-100 sm:space-x-4">
+                  <div className="flex items-center space-x-2 sm:space-x-4">
                     <a
                       href={`/post/${post.slug}`}
                       target="_blank"
@@ -151,7 +151,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="pt-12">
-        <div className="rounded-3xl border border-gray-100 bg-white p-8">
+        <div className="rounded-3xl border border-gray-400 bg-white p-8">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <h3 className="text-xl font-bold">Profile Settings</h3>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
             </div>
             <a
               href="/dashboard/profile"
-              className="rounded-full bg-gray-50 p-4 hover:bg-gray-100 transition-colors"
+              className="rounded-full bg-gray-60 p-4 hover:bg-gray-100 transition-colors"
             >
               <Settings size={20} />
             </a>

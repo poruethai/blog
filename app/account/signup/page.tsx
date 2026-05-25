@@ -80,7 +80,7 @@ export default function SignUpPage() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="your_username"
+                placeholder="Enter your name"
                 className="w-full border-b border-gray-200 py-2 outline-none transition-colors focus:border-black"
               />
             </div>
@@ -93,7 +93,7 @@ export default function SignUpPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
+                placeholder="Enter your email"
                 className="w-full border-b border-gray-200 py-2 outline-none transition-colors focus:border-black"
               />
             </div>

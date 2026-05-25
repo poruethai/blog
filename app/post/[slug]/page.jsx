@@ -51,12 +51,12 @@ export default async function PostDetailPage({ params }) {
           {post.title}
         </h1>
 
-        <div className="flex items-center space-x-6 border-t border-gray-100 pt-8">
+        <div className="flex items-center space-x-6 border-t border-gray-400 pt-8">
           <a
             href={`/profile/${post.authorId}`}
             className="flex items-center space-x-4 group"
           >
-            <div className="h-12 w-12 overflow-hidden rounded-full border border-gray-100 bg-gray-50 transition-transform group-hover:scale-105 flex items-center justify-center">
+            <div className="h-12 w-12 overflow-hidden rounded-full border border-gray-300 bg-gray-50 transition-transform group-hover:scale-105 flex items-center justify-center">
               <User className="h-6 w-6 text-gray-300" />
             </div>
             <div>
@@ -92,7 +92,7 @@ export default async function PostDetailPage({ params }) {
               <User className="h-10 w-10 text-gray-300" />
             </div>
             <div className="flex-1 space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-600">
                 Written by
               </h4>
               <h3 className="text-2xl font-bold">{post.author.username}</h3>

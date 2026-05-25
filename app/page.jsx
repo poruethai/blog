@@ -23,13 +23,13 @@ export default async function HomePage() {
     <div className="space-y-16">
       {/* HERO SECTION */}
       <section className="border-b border-black pb-16">
-        <h1 className="text-6xl font-bold tracking-tighter sm:text-8xl">
+        <h1 className="text-2xl font-bold tracking-tighter sm:text-5xl">
           Write
           <br />
           Freely.
         </h1>
 
-        <p className="mt-8 max-w-xl text-xl font-light leading-relaxed text-gray-500">
+        <p className="mt-6 max-w-xl text-l font-light leading-relaxed text-gray-500">
           A space for deep thoughts and clean prose. Join a community of writers
           focused on clarity and substance.
         </p>
