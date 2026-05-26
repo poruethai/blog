@@ -106,7 +106,7 @@ export default function EditorPage({ params }: EditorPageProps) {
       }
     },
 
-    onError: (or) => {
+    onError: (err) => {
       setErrorMsg(err.message);
     },
   });
