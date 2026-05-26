@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
-import { Search, User, Menu, X, Feather } from "lucide-react";
+import { Menu, X, Feather } from "lucide-react";
 import useUser from "@/utils/useUser";
-import { signOut } from "next-auth/react";
+import Avatar from "@/components/Avatar";
 
 export default function Header() {
   const { data: user } = useUser();
@@ -11,9 +11,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -36,12 +34,8 @@ export default function Header() {
           </a>
 
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium uppercase tracking-widest text-gray-500">
-            <a href="/" className="hover:text-black transition-colors">
-              Feed
-            </a>
-            <a href="/search" className="hover:text-black transition-colors">
-              Search
-            </a>
+            <a href="/" className="hover:text-black transition-colors">Feed</a>
+            <a href="/search" className="hover:text-black transition-colors">Search</a>
           </nav>
         </div>
 
@@ -55,17 +49,19 @@ export default function Header() {
                 >
                   Dashboard
                 </a>
-                <button 
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="text-sm font-medium uppercase tracking-widest text-gray-400 hover:text-black"
-                >
-                    Logout
-                </button>
                 <a
-                  href={`/profile/${user.id}`}
-                  className="h-8 w-8 rounded-full border border-gray-100 bg-gray-50 p-1"
+                  href="/account/logout"
+                  className="text-sm font-medium uppercase tracking-widest text-gray-400 hover:text-black"
                 >
-                  <User className="h-full w-full text-gray-400" />
+                  Logout
+                </a>
+                <a href="/dashboard/profile">
+                  <Avatar
+                    src={user.image}
+                    alt={user.name ?? ""}
+                    size="sm"
+                    className="hover:ring-2 hover:ring-black transition-all"
+                  />
                 </a>
               </>
             ) : (
@@ -86,46 +82,27 @@ export default function Header() {
             )}
           </div>
 
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white px-4 py-6 space-y-6">
           <nav className="flex flex-col space-y-4 text-sm font-medium uppercase tracking-widest text-gray-500">
-            <a href="/" onClick={() => setIsMenuOpen(false)}>
-              Feed
-            </a>
-            <a href="/search" onClick={() => setIsMenuOpen(false)}>
-              Search
-            </a>
+            <a href="/" onClick={() => setIsMenuOpen(false)}>Feed</a>
+            <a href="/search" onClick={() => setIsMenuOpen(false)}>Search</a>
             {user ? (
               <>
-                <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>
-                  Dashboard
-                </a>
-                <a href="/account/logout" onClick={() => setIsMenuOpen(false)}>
-                  Logout
-                </a>
+                <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>Dashboard</a>
+                <a href="/dashboard/profile" onClick={() => setIsMenuOpen(false)}>Profile Settings</a>
+                <a href="/account/logout" onClick={() => setIsMenuOpen(false)}>Logout</a>
               </>
             ) : (
               <>
-                <a href="/account/signin" onClick={() => setIsMenuOpen(false)}>
-                  Sign In
-                </a>
-                <a href="/account/signup" onClick={() => setIsMenuOpen(false)}>
-                  Sign Up
-                </a>
+                <a href="/account/signin" onClick={() => setIsMenuOpen(false)}>Sign In</a>
+                <a href="/account/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</a>
               </>
             )}
           </nav>
@@ -134,6 +111,4 @@ export default function Header() {
     </header>
   );
 }
-
-
 
