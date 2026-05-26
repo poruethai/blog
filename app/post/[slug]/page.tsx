@@ -4,7 +4,11 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import Avatar from "@/components/Avatar";
 
-export async function generateMetadata({ params }) {
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
   const post = await prisma.post.findUnique({
@@ -25,7 +29,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function PostDetailPage({ params }) {
+export default async function PostDetailPage({ params }: Props) {
   const { slug } = await params;
 
   const post = await prisma.post.findUnique({
