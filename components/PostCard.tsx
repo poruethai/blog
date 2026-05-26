@@ -4,7 +4,11 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Avatar from "@/components/Avatar";
 
-export default function PostCard({ post }) {
+type Props = {
+  post: any;
+};
+
+export default function PostCard({ post }: Props) {
   return (
     <article className="group border-b border-gray-100 py-12">
       <div className="flex flex-col md:flex-row md:space-x-8">
