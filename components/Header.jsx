@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Menu, X, Feather } from "lucide-react";
 import useUser from "@/utils/useUser";
@@ -51,12 +52,18 @@ export default function Header() {
                 >
                   Dashboard
                 </a>
-                <a
-                  href="/account/signin"
-                  className="text-sm font-medium uppercase tracking-widest text-gray-400 hover:text-black"
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+
+                    signOut({
+                      callbackUrl: "/",
+                    });
+                  }}
+                  className="text-left text-sm font-medium uppercase tracking-widest text-gray-500"
                 >
                   Logout
-                </a>
+                </button>
                 <a href={`/profile/${user.id}`}>
                   <Avatar
                     src={user.image}
@@ -99,7 +106,18 @@ export default function Header() {
               <>
                 <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>Dashboard</a>
                 <a href={`/profile/${user.id}`} onClick={() => setIsMenuOpen(false)}>Profile Settings</a>
-                <a href="/account/signin" onClick={() => setIsMenuOpen(false)}>Logout</a>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+
+                    signOut({
+                      callbackUrl: "/",
+                    });
+                  }}
+                  className="text-left text-sm font-medium uppercase tracking-widest text-gray-500"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
