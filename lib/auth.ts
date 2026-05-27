@@ -51,7 +51,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: user.id,
           email: user.email,
-          name: user.username, // username → แสดงผลเป็น display name
+          name: user.username, 
+          image: user.image,
         };
       },
     }),
@@ -65,6 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.image = user.image;
       }
       return token;
     },
@@ -72,6 +74,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.image = token.image as string;
       }
       return session;
     },

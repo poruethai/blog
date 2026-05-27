@@ -160,7 +160,7 @@ export default function DashboardPage() {
               </p>
             </div>
             <a
-              href="/dashboard/profile"
+              href={`/profile/${user.id}`} 
               className="rounded-full bg-gray-60 p-4 hover:bg-gray-100 transition-colors"
             >
               <Settings size={20} />

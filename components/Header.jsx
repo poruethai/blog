@@ -7,6 +7,8 @@ import Avatar from "@/components/Avatar";
 
 export default function Header() {
   const { data: user } = useUser();
+  console.log(user);
+  
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -55,10 +57,10 @@ export default function Header() {
                 >
                   Logout
                 </a>
-                <a href="/dashboard/profile">
+                <a href={`/profile/${user.id}`}>
                   <Avatar
                     src={user.image}
-                    alt={user.name ?? ""}
+                    alt={user.username ?? ""}
                     size="sm"
                     className="hover:ring-2 hover:ring-black transition-all"
                   />
@@ -96,7 +98,7 @@ export default function Header() {
             {user ? (
               <>
                 <a href="/dashboard" onClick={() => setIsMenuOpen(false)}>Dashboard</a>
-                <a href="/dashboard/profile" onClick={() => setIsMenuOpen(false)}>Profile Settings</a>
+                <a href={`/profile/${user.id}`} onClick={() => setIsMenuOpen(false)}>Profile Settings</a>
                 <a href="/account/logout" onClick={() => setIsMenuOpen(false)}>Logout</a>
               </>
             ) : (
