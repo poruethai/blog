@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Avatar from "@/components/Avatar";
+import type { Post, User } from "@prisma/client";
 
-type Props = {
-  post: any;
-};
+type Props = { post: Post & { author: Pick<User, "id" | "username" | "image"> } };
 
 export default function PostCard({ post }: Props) {
   return (

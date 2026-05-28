@@ -22,7 +22,7 @@ model Post {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  content     String   @db.Text explicit
+  content     String   @db.Text
 
   excerpt     String?
   coverImage  String?
