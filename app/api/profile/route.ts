@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-// ── GET /api/profile ──────────────────────────────────────────────────────────
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
@@ -21,7 +20,6 @@ export async function GET() {
   return NextResponse.json({ user });
 }
 
-// ── PATCH /api/profile ────────────────────────────────────────────────────────
 export async function PATCH(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -31,7 +29,6 @@ export async function PATCH(request: Request) {
   try {
     const { username, bio, image } = await request.json();
 
-    // ตรวจ username ซ้ำ (ถ้ามีการเปลี่ยน)
     if (username) {
       const existing = await prisma.user.findFirst({
         where: { username, NOT: { id: session.user.id } },

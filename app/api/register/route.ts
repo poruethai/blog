@@ -11,7 +11,6 @@ export async function POST(request: Request) {
       username?: string;
     };
 
-    // ── Validation ──────────────────────────────────────────────
     if (!email || !password || !username) {
       return NextResponse.json(
         { error: "email, password and username are required" },
@@ -26,7 +25,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // ── Duplicate check ──────────────────────────────────────────
     const existing = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { username }],
@@ -42,7 +40,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // ── Hash & create ─────────────────────────────────────────────
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({

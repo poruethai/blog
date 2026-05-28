@@ -9,7 +9,6 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
-  // auto debounce 400ms
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query.trim());

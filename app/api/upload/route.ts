@@ -2,12 +2,11 @@ import { auth } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
-const BUCKET = "post-images"; // ชื่อ bucket ใน Supabase Storage
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const BUCKET = "post-images";  
+const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 export async function POST(request: Request) {
-  // ตรวจ session
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -21,7 +20,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // validate type
     if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
         { error: "Only JPEG, PNG, WebP, GIF allowed" },
@@ -29,7 +27,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // validate size
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
         { error: "File too large (max 5MB)" },
@@ -40,7 +37,6 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // path: {userId}/{timestamp}-{filename}
     const ext = file.name.split(".").pop();
     const filename = `${session.user.id}/${Date.now()}.${ext}`;
 
@@ -56,7 +52,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Upload failed" }, { status: 500 });
     }
 
-    // get public URL
     const { data } = supabaseAdmin.storage
       .from(BUCKET)
       .getPublicUrl(filename);

@@ -21,7 +21,9 @@ export async function GET(request: Request) {
         ],
       },
       include: {
-        author: true,
+        author: {
+            select: { id: true, username: true, image: true}
+        }
       },
       orderBy: {
         createdAt: "desc",

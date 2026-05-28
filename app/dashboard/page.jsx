@@ -60,7 +60,7 @@ export default function DashboardPage() {
             <LayoutDashboard size={14} />
             <span>Dashboard</span>
           </div>
-          <h1 className="text-5xl font-bold tracking-tight">Your Stories</h1>
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight">Your Stories</h1>
         </div>
 
         <a
@@ -78,7 +78,7 @@ export default function DashboardPage() {
             {posts.map((post) => (
               <div
                 key={post.id}
-                className="group py-8 transition-colors hover:bg-gray-50/50"
+                className="group py-8 px-5 transition-colors hover:bg-gray-50/50"
               >
                 <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
                   <div className="space-y-1">

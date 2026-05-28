@@ -33,7 +33,7 @@ export default function Header() {
             <div className="bg-black p-1">
               <Feather className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold tracking-tighter">MINIMAL.</span>
+            <span className="text-xl font-bold tracking-tighter">BLOG.</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium uppercase tracking-widest text-gray-500">
@@ -67,11 +67,10 @@ export default function Header() {
                 <a href={`/profile/${user.id}`}>
                   <Avatar
                     src={user.image}
-                    alt={user.username ?? ""}
-                    size="sm"
+                    size="md"
                     className="hover:ring-2 hover:ring-black transition-all"
                   />
-                </a>
+                </a> 
               </>
             ) : (
               <>

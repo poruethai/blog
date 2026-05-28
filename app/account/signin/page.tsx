@@ -12,7 +12,6 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
 
   const router = useRouter();
-  // ★ FIX: ใช้ `login` ซึ่งเป็น function จริงที่ export ออกมา
   const { login } = useAuth();
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -35,7 +34,6 @@ export default function SignInPage() {
         return;
       }
 
-      // สำเร็จ → ไป dashboard
       router.push("/dashboard");
       router.refresh();
     } catch {

@@ -6,7 +6,6 @@ interface Params {
   params: Promise<{ id: string }>;
 }
 
-// ── GET /api/posts/[id] ───────────────────────────────────────────────────────
 export async function GET(_req: Request, { params }: Params) {
   const { id } = await params;
 
@@ -20,7 +19,6 @@ export async function GET(_req: Request, { params }: Params) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    // ถ้า draft → เฉพาะเจ้าของดูได้
     if (!post.published) {
       const session = await auth();
       if (session?.user?.id !== post.authorId) {
@@ -35,7 +33,6 @@ export async function GET(_req: Request, { params }: Params) {
   }
 }
 
-// ── PATCH /api/posts/[id] ─────────────────────────────────────────────────────
 export async function PATCH(req: Request, { params }: Params) {
   const { id } = await params;
 
@@ -80,7 +77,6 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 }
 
-// ── DELETE /api/posts/[id] ────────────────────────────────────────────────────
 export async function DELETE(_req: Request, { params }: Params) {
   const { id } = await params;
 

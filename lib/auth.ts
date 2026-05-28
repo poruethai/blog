@@ -45,9 +45,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!isValid) {
           throw new Error("Invalid password");
         }
-
-        // ★ FIX: schema มี `username` ไม่มี `name`
-        //         ส่ง username ไปเก็บใน token.name เพื่อให้ session.user.name ใช้งานได้
         return {
           id: user.id,
           email: user.email,

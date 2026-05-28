@@ -12,10 +12,8 @@ model User {
   username  String   @unique
   email     String   @unique
   password  String
-  fullName  String?
   bio       String?
   image     String?
-  avatarUrl String?
   posts     Post[]
   createdAt DateTime @default(now())
 }
@@ -24,7 +22,7 @@ model Post {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  content     String
+  content     String   @db.Text explicit
 
   excerpt     String?
   coverImage  String?

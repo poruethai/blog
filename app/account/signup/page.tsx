@@ -13,7 +13,6 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
 
   const router = useRouter();
-  // ★ FIX: ใช้ `register` ซึ่งเป็น function จริงที่ export ออกมา
   const { register } = useAuth();
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -42,12 +41,10 @@ export default function SignUpPage() {
         return;
       }
 
-      // สมัครและ login สำเร็จ → ไป dashboard
       router.push("/dashboard");
       router.refresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong.";
-      // แปลง error message จาก API ให้อ่านง่าย
       const errorMessages: Record<string, string> = {
         "This email is already registered": "This email is already in use.",
         "This username is already registered": "This username is taken.",

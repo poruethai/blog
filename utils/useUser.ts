@@ -8,9 +8,8 @@ export const useUser = () => {
 
   const user = session?.user ?? null;
 
-  // optional refetch (NextAuth built-in)
   const refetch = useCallback(() => {
-    update(); // refresh session from server
+    update(); 
   }, [update]);
 
   return {

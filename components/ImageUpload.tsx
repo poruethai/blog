@@ -63,10 +63,9 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
-    e.target.value = ""; // reset input
+    e.target.value = ""; 
   };
 
-  // ── มีรูปแล้ว → แสดง preview ────────────────────────────────────────────
   if (value) {
     return (
       <div className="relative">
@@ -89,7 +88,6 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
     );
   }
 
-  // ── ยังไม่มีรูป → dropzone ───────────────────────────────────────────────
   return (
     <div>
       <label

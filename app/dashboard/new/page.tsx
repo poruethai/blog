@@ -1,33 +1,22 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// วิธีใช้:
-//   สร้างโพสต์ใหม่ → app/editor/page.tsx  (ไม่มี params)
-//   แก้ไขโพสต์    → app/editor/[id]/page.tsx  (ไฟล์นี้)
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { use, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, Send, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useUser from "@/utils/useUser";
 
-// ── Types ────────────────────────────────────────────────────────────────────
 interface EditorPageProps {
-  // Next.js 15+ → params เป็น Promise ต้อง unwrap ด้วย use()
   params: Promise<{ id: string }>;
 }
 
-// ── Component ────────────────────────────────────────────────────────────────
 export default function EditorPage({ params }: EditorPageProps) {
-  // ★ FIX 1: Next.js 15+ params เป็น Promise → ต้องใช้ React.use() unwrap
   const { id } = use(params);
   const isEditing = !!id;
 
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // ★ FIX 2: ตรวจว่า login อยู่หรือเปล่า ถ้าไม่มี session → redirect
   const { user, loading } = useUser();
 
   const [title, setTitle] = useState("");
@@ -36,14 +25,12 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [coverImage, setCoverImage] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // redirect ถ้าไม่ได้ login
   useEffect(() => {
     if (!loading && !user) {
       router.push("/account/signin");
     }
   }, [user, loading, router]);
 
-  // ── Fetch post เมื่อ edit ─────────────────────────────────────────────────
   const { data: postData } = useQuery({
     queryKey: ["post", id],
     queryFn: async () => {
@@ -51,23 +38,19 @@ export default function EditorPage({ params }: EditorPageProps) {
       if (!res.ok) throw new Error("Post not found");
       return res.json();
     },
-    // ★ FIX 3: enabled ป้องกัน fetch เมื่อไม่มี id
+    
     enabled: isEditing,
   });
 
-  // ★ FIX 4: React Query v5 ลบ onSuccess ออกจาก useQuery แล้ว
-  //          ต้องใช้ useEffect ดักข้อมูลแทน
   useEffect(() => {
     if (postData?.post) {
       setTitle(postData.post.title ?? "");
       setContent(postData.post.content ?? "");
       setExcerpt(postData.post.excerpt ?? "");
-      // ★ FIX 5: schema ใช้ coverImage ไม่ใช่ cover_image
       setCoverImage(postData.post.coverImage ?? "");
     }
   }, [postData]);
 
-  // ── Mutation ──────────────────────────────────────────────────────────────
   const mutation = useMutation({
     mutationFn: async (published: boolean) => {
       const url = isEditing ? `/api/posts/${id}` : "/api/posts";
@@ -80,7 +63,6 @@ export default function EditorPage({ params }: EditorPageProps) {
           title,
           content,
           excerpt,
-          // ★ FIX 5: ใช้ coverImage ตาม schema ไม่ใช่ cover_image
           coverImage,
           published,
         }),
@@ -98,8 +80,6 @@ export default function EditorPage({ params }: EditorPageProps) {
       queryClient.invalidateQueries({ queryKey: ["my-posts"] });
 
       if (published && data.post?.slug) {
-        // ★ FIX 6: redirect ไป slug ไม่ใช่ id
-        // ★ FIX 7: ใช้ router.push แทน window.location.href (Next.js way)
         router.push(`/post/${data.post.slug}`);
       } else {
         router.push("/dashboard");
@@ -111,7 +91,6 @@ export default function EditorPage({ params }: EditorPageProps) {
     },
   });
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleSave = (published: boolean) => {
     setErrorMsg(null);
     if (!title.trim() || !content.trim()) {
@@ -121,11 +100,9 @@ export default function EditorPage({ params }: EditorPageProps) {
     mutation.mutate(published);
   };
 
-  // ── Loading guard ─────────────────────────────────────────────────────────
   if (loading) return null;
   if (!user) return null;
 
-  // ── UI ────────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-12 font-sans pb-24">
       {/* Header */}
@@ -146,7 +123,6 @@ export default function EditorPage({ params }: EditorPageProps) {
 
           <button
             onClick={() => handleSave(false)}
-            // ★ FIX 8: v5 ใช้ isPending ไม่ใช่ isLoading
             disabled={mutation.isPending}
             className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black disabled:opacity-50"
           >
@@ -173,7 +149,7 @@ export default function EditorPage({ params }: EditorPageProps) {
             placeholder="Title of your story..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-5xl font-bold tracking-tight outline-none placeholder:text-gray-100"
+            className="w-full text-3xl md:text-5xl font-bold tracking-tight outline-none placeholder:text-gray-100"
           />
 
           <div className="flex flex-col space-y-4 border-l-2 border-gray-100 pl-6">

@@ -20,14 +20,12 @@ export default function ProfileSettingsPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showUploader, setShowUploader] = useState(false);
 
-  // redirect ถ้าไม่ได้ login
   useEffect(() => {
     if (!sessionLoading && !sessionUser) {
       router.push("/account/signin");
     }
   }, [sessionUser, sessionLoading, router]);
 
-  // ── Fetch ─────────────────────────────────────────────────────────────────
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
@@ -46,7 +44,6 @@ export default function ProfileSettingsPage() {
     }
   }, [data]);
 
-  // ── Mutation ──────────────────────────────────────────────────────────────
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await fetch("/api/profile", {
@@ -78,7 +75,6 @@ export default function ProfileSettingsPage() {
     mutation.mutate();
   };
 
-  // เมื่ออัพโหลดรูปเสร็จ → บันทึกทันที
   const handleImageChange = (url: string) => {
     setImage(url);
     setShowUploader(false);
