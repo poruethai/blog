@@ -11,12 +11,19 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { useRouter } from "next/navigation"; 
+import { useEffect } from "react";
 import useUser from "@/utils/useUser";
 
 export default function DashboardPage() {
   const { data: user, loading: userLoading } = useUser();
   const queryClient = useQueryClient();
   const router = useRouter(); 
+
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push("/account/signin");
+    }
+  }, [user, userLoading, router]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["my-posts", user?.id],
@@ -48,7 +55,6 @@ export default function DashboardPage() {
   }
 
   if (!user) {
-    router.push("/account/signin");
     return null;
   }
 

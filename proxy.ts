@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 
-export default auth;
+export const proxy = auth;   
 
 export const config = {
   matcher: [

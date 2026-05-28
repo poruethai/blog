@@ -7,7 +7,7 @@ import useUser from "@/utils/useUser";
 import Avatar from "@/components/Avatar";
 
 export default function Header() {
-  const { data: user } = useUser();
+  const { user } = useUser();
   console.log(user);
 
   const [isScrolled, setIsScrolled] = useState(false);
